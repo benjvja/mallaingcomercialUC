@@ -1,54 +1,88 @@
 
+:root {
+  --mat: #FFF9C4;
+  --econ: #BBDEFB;
+  --adm: #FFE0B2;
+  --prog: #E1BEE7;
+  --form: #E0E0E0;
+  --opt: #C8E6C9;
+  --practica: #B2DFDB;
+  --examen: #F8BBD0;
+  --text: #212121;
+  --border: #BDBDBD;
+}
+
+* { box-sizing: border-box; }
+
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Arial', sans-serif;
   background: #f4f6f9;
-  margin: 0 auto;
-  padding: 20px;
-  color: #212121;
-  max-width: 1100px;
+  margin: 20px auto;
+  padding: 0;
+  max-width: 1200px;
+  color: var(--text);
 }
 
 h1 {
   text-align: center;
+  margin-bottom: 20px;
   color: #003366;
-  margin-bottom: 30px;
 }
 
 .malla {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
 }
 
 .semestre {
-  background: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 12px;
 }
 
 .semestre h2 {
   text-align: center;
-  color: #004b8d;
-  margin-bottom: 10px;
+  margin: 0 0 12px;
+  font-size: 1rem;
+  color: #003366;
 }
 
 .ramo {
-  background: #e3f2fd;
-  border-left: 6px solid #90caf9;
-  padding: 10px;
-  border-radius: 5px;
-  margin: 5px 0;
-  font-weight: 500;
-  transition: background 0.2s ease;
+  position: relative;
+  padding: 8px 12px;
+  margin: 6px 0;
+  background: #fff;
+  border-left: 8px solid var(--border);
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
+  transition: background 0.2s;
+}
+
+.ramo span {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.creditos {
+  font-size: 0.8rem;
+  color: #555;
 }
 
 .ramo:hover {
-  background: #d0ebff;
+  background: #f0f4f8;
 }
+
+.ramo.mat { border-color: var(--mat); background: var(--mat); }
+.ramo.econ { border-color: var(--econ); background: var(--econ); }
+.ramo.admin { border-color: var(--adm); background: var(--adm); }
+.ramo.prog { border-color: var(--prog); background: var(--prog); }
+.ramo.form { border-color: var(--form); background: var(--form); }
+.ramo.opt { border-color: var(--opt); background: var(--opt); }
+.ramo.practica { border-color: var(--practica); background: var(--practica); }
+.ramo.examen { border-color: var(--examen); background: var(--examen); }
 
 .ramo.locked {
   opacity: 0.5;
@@ -56,28 +90,43 @@ h1 {
 }
 
 .ramo.approved {
-  background-color: #c8e6c9 !important;
   text-decoration: line-through;
 }
 
-.creditos {
-  float: right;
-  font-size: 0.85em;
-  color: #555;
-}
-
 #progress-bar {
-  background: #e0e0e0;
-  height: 20px;
   width: 100%;
-  margin-bottom: 20px;
-  border-radius: 10px;
+  height: 16px;
+  background: #e0e0e0;
+  border-radius: 8px;
   overflow: hidden;
+  margin-bottom: 20px;
 }
 
 #progress-fill {
-  background: #4caf50;
   height: 100%;
   width: 0;
-  transition: width 0.4s ease-in-out;
+  background: #4caf50;
+  transition: width 0.3s ease;
+}
+
+#legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+#legend div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+#legend span {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  border: 1px solid var(--border);
+  border-radius: 4px;
 }
