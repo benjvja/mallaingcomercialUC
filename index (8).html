@@ -4,6 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Malla Ingeniería Comercial UC</title>
+  <!-- Importar Bootstrap, Google Fonts y FontAwesome para mejorar la estética -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+  <style>
+    body {
+      font-family: 'Open Sans', sans-serif;
+    }
+  </style>
   <style>
     /* Reset y tipografía */
     body {
@@ -15,7 +26,6 @@
     }
 
     h1 {
-      text-align: center;
       margin-bottom: 25px;
       color: #004b8d;
     }
@@ -46,11 +56,12 @@
 
     /* Grid de la malla */
     .malla {
+      /* Make the grid responsive: columns will wrap when the container is narrow */
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
       max-width: 1400px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat(10, 1fr);
-      gap: 15px;
       user-select: none;
     }
 
@@ -129,14 +140,47 @@
     }
 
     /* Colores por tipo de curso */
-    .econ { background-color: #42a5f5; border-color: #1e88e5; color: #fff; }
-    .admin { background-color: #ef5350; border-color: #e53935; color: #fff; }
-    .mat   { background-color: #ffa726; border-color: #fb8c00; color: #fff; }
-    .prog  { background-color: #ab47bc; border-color: #8e24aa; color: #fff; }
-    .form  { background-color: #26a69a; border-color: #00897b; color: #fff; }
-    .opt   { background-color: #b0bec5; border-color: #90a4ae; color: #000; }
-    .practica { background-color: #66bb6a; border-color: #43a047; color: #fff; }
-    .examen   { background-color: #ff8a65; border-color: #f4511e; color: #fff; }
+    /* Pastel palette inspired by the original PDF diagram */
+    .econ {
+      background-color: #BBDEFB;
+      border-color: #90CAF9;
+      color: #000;
+    }
+    .admin {
+      background-color: #FFCDD2;
+      border-color: #EF9A9A;
+      color: #000;
+    }
+    .mat {
+      background-color: #FFF9C4;
+      border-color: #FFF59D;
+      color: #000;
+    }
+    .prog {
+      background-color: #E1BEE7;
+      border-color: #CE93D8;
+      color: #000;
+    }
+    .form {
+      background-color: #C8E6C9;
+      border-color: #A5D6A7;
+      color: #000;
+    }
+    .opt {
+      background-color: #E0E0E0;
+      border-color: #BDBDBD;
+      color: #000;
+    }
+    .practica {
+      background-color: #B2DFDB;
+      border-color: #80CBC4;
+      color: #000;
+    }
+    .examen {
+      background-color: #F8BBD0;
+      border-color: #F48FB1;
+      color: #000;
+    }
 
     /* Estados */
     .ramo.bloqueado {
@@ -185,13 +229,17 @@
 </head>
 
 <body>
-  <h1>Malla Ingeniería Comercial UC</h1>
+  <!-- Barra de navegación al estilo de la malla de referencia -->
+  <nav class="navbar navbar-light bg-light justify-content-between mb-4">
+    <span class="navbar-brand mb-0 h1">Malla Ingeniería Comercial UC</span>
+    <div class="d-flex">
+      <button id="btn-economia" class="btn btn-outline-primary mr-2 active" onclick="cambiarMencion('economia')">Mención Economía</button>
+      <button id="btn-admin" class="btn btn-outline-primary mr-2" onclick="cambiarMencion('admin')">Mención Administración</button>
+      <button id="btn-reset" class="btn btn-outline-danger" onclick="reiniciarMalla()">Reiniciar Progreso</button>
+    </div>
+  </nav>
 
-  <div class="selector-mencion">
-    <button id="btn-economia" class="active" onclick="cambiarMencion('economia')">Mención Economía</button>
-    <button id="btn-admin" onclick="cambiarMencion('admin')">Mención Administración</button>
-    <button id="btn-reset" onclick="reiniciarMalla()" style="border:2px solid #ef5350;background:#fff;color:#000;border-radius:5px;">Reiniciar Progreso</button>
-  </div>
+  <div class="container">
 
   <div class="malla">
     <!-- Aquí va todo el contenido de semestres y ramos (copiado de tu código funcional) -->
@@ -328,7 +376,7 @@
 </div>
   </div>
 
-  <div class="leyenda">
+    <div class="leyenda">
     <div><span class="leyenda-circle econ"></span>Economía</div>
     <div><span class="leyenda-circle admin"></span>Administración</div>
     <div><span class="leyenda-circle mat"></span>Matemáticas</div>
@@ -337,7 +385,8 @@
     <div><span class="leyenda-circle opt"></span>Optativos</div>
     <div><span class="leyenda-circle practica"></span>Práctica</div>
     <div><span class="leyenda-circle examen"></span>Examen</div>
-  </div>
+    </div>
+  </div> <!-- cierre container -->
 
   <script>
     let mencionActual = 'economia';
