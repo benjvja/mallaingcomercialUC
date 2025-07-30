@@ -8,52 +8,38 @@ const progressFill = document.getElementById('progress-fill');
 
 const TOTAL = semesters.flatMap(s => s.courses).reduce((a,c) => a + c.credits, 0);
 let approved = JSON.parse(localStorage.getItem('mallaApproved')||'[]');
-
-const CAT_MAP = {
-  'MAT':'math','EST':'math','IIC':'math',
-  'EAE':'econ','EAZ':'econ',
-  'EAF':'fin','EAA':'adm',
-  'FGN':'fg','THE':'fg','DEP':'fg','FIL':'fg','VRA':'fg'
-};
+const CAT_MAP = {'MAT':'math','EST':'math','IIC':'math','EAE':'econ','EAZ':'econ','EAF':'fin','EAA':'adm','FGN':'fg','THE':'fg','DEP':'fg','FIL':'fg','VRA':'fg'};
 
 function getCat(code){
   const p = code.slice(0,3).toUpperCase();
-  return 'pc' in CAT_MAP? 'pc' : (CAT_MAP[p] || 'pc');
+  return CAT_MAP[p] || 'pc';
 }
-
 function save(){ localStorage.setItem('mallaApproved', JSON.stringify(approved)); }
-
-function toggle(code){
-  approved = approved.includes(code) ? approved.filter(c=>c!==code) : [...approved,code];
-  save(); render();
-}
+function toggle(code){ approved.includes(code) ? approved = approved.filter(c=>c!==code) : approved.push(code); save(); render(); }
 
 function render(){
   semContainer.innerHTML = '';
-  semesters.forEach((sem,i) => {
+  semesters.forEach((sem,i)=>{
     const sec = document.createElement('section');
     sec.innerHTML = `<h2>Sem ${i+1}</h2>`;
     semContainer.appendChild(sec);
-    sem.courses.forEach(c => {
+    sem.courses.forEach(c=>{
       const unlocked = c.prereq.every(r=>approved.includes(r));
       const done = approved.includes(c.code);
       const btn = document.createElement('button');
-      btn.classList.add('subject', `cat-${CAT_MAP[c.code.slice(0,3)]||'pc'}`);
+      btn.setAttribute('data-code', c.code);
+      btn.setAttribute('data-prereqs', c.prereq.length);
+      btn.classList.add('subject', `cat-${getCat(c.code)}`);
       if(!unlocked && !done) btn.classList.add('locked');
       if(done) btn.classList.add('done');
-      btn.setAttribute('data-prereqs', c.prereq.length);
       btn.innerHTML = `<strong>${c.code}</strong><br><small>${c.name}</small><br><small>${c.credits} cr.</small>`;
       if(unlocked||done) btn.onclick = ()=>toggle(c.code);
       sec.appendChild(btn);
     });
   });
-  // progress
-  const earned = semesters.flatMap(s=>s.courses)
-    .filter(c=>approved.includes(c.code))
-    .reduce((a,c)=>a+c.credits,0);
-  const pct = Math.round(earned/TOTAL*100);
-  progressFill.style.width = pct+'%';
-
+  const earned = semesters.flatMap(s=>s.courses).filter(c=>approved.includes(c.code)).reduce((a,c)=>a+c.credits,0);
+  const pct = Math.round((earned/TOTAL)*100);
+  progressFill.style.width = pct + '%';
   drawLines();
 }
 
@@ -62,13 +48,34 @@ function drawLines(){
   canvas.width = rect.width; canvas.height = rect.height;
   ctx.clearRect(0,0,canvas.width,canvas.height);
   ctx.strokeStyle = '#64748b7f'; ctx.fillStyle = '#64748b7f'; ctx.lineWidth=2;
-  semesters.forEach((sem) => {
-    sem.courses.forEach(c => {
-      const el = document.querySelector(`[data-code="${c.code}"]`);
+  semesters.forEach((sem,si)=>{
+    sem.courses.forEach(c=>{
+      const src = document.querySelector(`[data-code="${c.code}"]`);
+      if(!src) return;
+      const sr = src.getBoundingClientRect();
+      const x1 = sr.left + sr.width/2 - rect.left, y1 = sr.bottom - rect.top;
+      semesters.forEach((sem2,sj)=>{
+        sem2.courses.forEach(c2=>{
+          if(c2.prereq.includes(c.code)){
+            const tgt = document.querySelector(`[data-code="${c2.code}"]`);
+            if(!tgt) return;
+            const tr = tgt.getBoundingClientRect();
+            const x2 = tr.left + tr.width/2 - rect.left, y2 = tr.top - rect.top;
+            // draw arrow
+            ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2); ctx.stroke();
+            const ang = Math.atan2(y2-y1,x2-x1), h=6;
+            ctx.beginPath();
+            ctx.moveTo(x2,y2);
+            ctx.lineTo(x2-h*Math.cos(ang-Math.PI/6), y2-h*Math.sin(ang-Math.PI/6));
+            ctx.lineTo(x2-h*Math.cos(ang+Math.PI/6), y2-h*Math.sin(ang+Math.PI/6));
+            ctx.closePath();
+            ctx.fill();
+          }
+        });
+      });
     });
   });
-  // simplified: arrow drawing omitted for brevity
 }
 
-window.addEventListener('resize', () => render());
+window.addEventListener('resize', render);
 render();

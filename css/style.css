@@ -1,14 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 :root{
-  --pc:#dbeafe;      /* Plan Común */
-  --math:#e0f2fe;    /* Matemáticas / Estadística */
-  --econ:#bfdbfe;    /* Economía */
-  --fin:#c7d2fe;     /* Finanzas */
-  --adm:#fef9c3;     /* Administración */
-  --fg:#e5e7eb;      /* Formación General */
-  --minor:#fde68a;   /* Optativos / Minor */
-  --approved:#34d399;/* Aprobado */
+  --pc:#dbeafe;
+  --math:#e0f2fe;
+  --econ:#bfdbfe;
+  --fin:#c7d2fe;
+  --adm:#fef9c3;
+  --fg:#e5e7eb;
+  --minor:#fde68a;
+  --approved:#34d399;
   --text-dark:#0f172a;
   --text-light:#f8fafc;
 }
@@ -18,7 +18,6 @@ body{
   background:#0d1117;
   color:var(--text-light);
   font-family:'Inter',sans-serif;
-  line-height:1.4;
   scroll-behavior:smooth;
   animation:fadeIn .5s ease-in;
 }
@@ -32,8 +31,8 @@ body{
   position:relative;
 }
 
-h1{text-align:center; margin-bottom:1rem; font-size:2rem; font-weight:600;}
-p{ text-align:center; margin-bottom:1.5rem; }
+h1{text-align:center;margin-bottom:1rem;font-size:2rem;font-weight:600;}
+p{text-align:center;margin-bottom:1.5rem;}
 
 #legend{
   max-width:80rem;
@@ -44,10 +43,8 @@ p{ text-align:center; margin-bottom:1.5rem; }
   gap:1.5rem;
   font-size:.875rem;
 }
-
-#legend div{ display:flex; align-items:center; gap:.5rem; }
-
-#legend span{ width:.75rem; height:.75rem; display:block; border:1px solid #64748b; }
+#legend div{display:flex;align-items:center;gap:.5rem;}
+#legend span{width:.75rem;height:.75rem;display:block;border:1px solid #64748b;}
 
 #progress-bar{
   max-width:80rem;
@@ -57,7 +54,6 @@ p{ text-align:center; margin-bottom:1.5rem; }
   border-radius:.375rem;
   overflow:hidden;
 }
-
 #progress-fill{
   height:100%;
   background:var(--approved);
@@ -65,20 +61,15 @@ p{ text-align:center; margin-bottom:1.5rem; }
   transition:width .6s ease;
 }
 
-/* Grid layout for semesters */
-#semesters {
+#semesters{
   display:grid;
   grid-template-columns:repeat(10,1fr);
   gap:1rem;
 }
-
-#semesters > section {
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+#semesters>section{
+  display:flex;flex-direction:column;align-items:center;
 }
-
-#semesters > section > h2 {
+#semesters>section>h2{
   background:#334155;
   color:#f1f5f9;
   padding:.25rem .5rem;
@@ -87,7 +78,6 @@ p{ text-align:center; margin-bottom:1.5rem; }
   font-size:.875rem;
 }
 
-/* Course cards */
 .subject{
   position:relative;
   width:100%;
@@ -102,41 +92,27 @@ p{ text-align:center; margin-bottom:1.5rem; }
   transition:transform .2s ease, box-shadow .2s ease, background .2s;
   user-select:none;
 }
-
-.subject:hover{
+.subject:hover:not(.locked){
   transform:scale(1.05);
   box-shadow:0 4px 12px #0ea5e982;
 }
-
 .subject.locked{
-  opacity:.4;
-  filter:grayscale(1);
-  cursor:not-allowed;
+  opacity:.4;filter:grayscale(1);cursor:not-allowed;
 }
-
 .subject.done{
   background:var(--approved);
   color:var(--text-light);
   border-color:transparent;
 }
 
-/* Prereq badge */
-.subject[data-prereqs]:not([data-prereqs="0"])::before {
-  content: attr(data-prereqs);
-  position:absolute;
-  top:-.25rem;
-  right:-.25rem;
-  background:#ef4444;
-  color:white;
-  width:1.25rem;
-  height:1.25rem;
-  line-height:1.25rem;
-  border-radius:50%;
-  font-weight:600;
-  font-size:.75rem;
+.subject[data-prereqs]:not([data-prereqs="0"])::before{
+  content:attr(data-prereqs);
+  position:absolute;top:-.25rem;right:-.25rem;
+  background:#ef4444;color:white;
+  width:1.25rem;height:1.25rem;line-height:1.25rem;
+  border-radius:50%;font-weight:600;font-size:.75rem;
 }
 
-/* Category colors */
 .cat-pc{background:var(--pc);}
 .cat-math{background:var(--math);}
 .cat-econ{background:var(--econ);}
@@ -145,7 +121,6 @@ p{ text-align:center; margin-bottom:1.5rem; }
 .cat-fg{background:var(--fg);}
 .cat-minor{background:var(--minor);}
 
-/* Canvas lines */
 canvas{
   position:absolute;
   inset:0;
