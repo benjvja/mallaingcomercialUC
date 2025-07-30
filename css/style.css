@@ -1,16 +1,14 @@
-
-/* === Inter font === */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
 :root{
-  --pc:#dbeafe;      /* plan común celeste claro */
-  --math:#e0f2fe;    /* mates/stat */
-  --econ:#bfdbfe;    /* economía */
-  --fin:#c7d2fe;     /* finanzas */
-  --adm:#fef9c3;     /* administración */
-  --fg:#e5e7eb;      /* formación general */
-  --minor:#fde68a;   /* opt/minor */
-  --approved:#34d399;
+  --pc:#dbeafe;      /* Plan Común */
+  --math:#e0f2fe;    /* Matemáticas / Estadística */
+  --econ:#bfdbfe;    /* Economía */
+  --fin:#c7d2fe;     /* Finanzas */
+  --adm:#fef9c3;     /* Administración */
+  --fg:#e5e7eb;      /* Formación General */
+  --minor:#fde68a;   /* Optativos / Minor */
+  --approved:#34d399;/* Aprobado */
   --text-dark:#0f172a;
   --text-light:#f8fafc;
 }
@@ -22,44 +20,124 @@ body{
   font-family:'Inter',sans-serif;
   line-height:1.4;
   scroll-behavior:smooth;
+  animation:fadeIn .5s ease-in;
 }
 
-h1,h2{
-  margin:.25rem 0 .75rem;
-  font-weight:600;
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+
+#malla-wrapper{
+  max-width:80rem;
+  margin:0 auto;
+  padding:1rem;
+  position:relative;
 }
 
-#semesters{
-  padding-bottom:4rem;
+h1{text-align:center; margin-bottom:1rem; font-size:2rem; font-weight:600;}
+p{ text-align:center; margin-bottom:1.5rem; }
+
+#legend{
+  max-width:80rem;
+  margin:0 auto 1rem;
+  padding:1rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:1.5rem;
+  font-size:.875rem;
 }
 
+#legend div{ display:flex; align-items:center; gap:.5rem; }
+
+#legend span{ width:.75rem; height:.75rem; display:block; border:1px solid #64748b; }
+
+#progress-bar{
+  max-width:80rem;
+  margin:0 auto 2rem;
+  background:#334155;
+  height:.75rem;
+  border-radius:.375rem;
+  overflow:hidden;
+}
+
+#progress-fill{
+  height:100%;
+  background:var(--approved);
+  width:0;
+  transition:width .6s ease;
+}
+
+/* Grid layout for semesters */
+#semesters {
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:1rem;
+}
+
+#semesters > section {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+#semesters > section > h2 {
+  background:#334155;
+  color:#f1f5f9;
+  padding:.25rem .5rem;
+  border-radius:.375rem;
+  margin-bottom:.75rem;
+  font-size:.875rem;
+}
+
+/* Course cards */
 .subject{
   position:relative;
-  padding:.75rem .65rem;
-  border:2px solid #64748b5e;
-  border-radius:6px;
-  min-width:9.5rem;
+  width:100%;
+  max-width:8rem;
+  padding:.5rem;
   background:var(--pc);
   color:var(--text-dark);
-  transition:transform .18s ease, box-shadow .18s ease, background .18s;
+  border:2px solid #64748b6e;
+  border-radius:.5rem;
+  text-align:center;
+  font-size:.75rem;
+  transition:transform .2s ease, box-shadow .2s ease, background .2s;
   user-select:none;
 }
-.subject:not(.locked):hover{
-  transform:scale(1.04);
-  box-shadow:0 4px 14px -3px #0ea5e9aa;
+
+.subject:hover{
+  transform:scale(1.05);
+  box-shadow:0 4px 12px #0ea5e982;
 }
+
 .subject.locked{
   opacity:.4;
   filter:grayscale(1);
   cursor:not-allowed;
 }
+
 .subject.done{
   background:var(--approved);
   color:var(--text-light);
   border-color:transparent;
 }
 
+/* Prereq badge */
+.subject[data-prereqs]:not([data-prereqs="0"])::before {
+  content: attr(data-prereqs);
+  position:absolute;
+  top:-.25rem;
+  right:-.25rem;
+  background:#ef4444;
+  color:white;
+  width:1.25rem;
+  height:1.25rem;
+  line-height:1.25rem;
+  border-radius:50%;
+  font-weight:600;
+  font-size:.75rem;
+}
+
 /* Category colors */
+.cat-pc{background:var(--pc);}
 .cat-math{background:var(--math);}
 .cat-econ{background:var(--econ);}
 .cat-fin{background:var(--fin);}
@@ -67,6 +145,9 @@ h1,h2{
 .cat-fg{background:var(--fg);}
 .cat-minor{background:var(--minor);}
 
-/* Smooth fade on load */
-body{animation:fadeIn .5s ease-in;}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+/* Canvas lines */
+canvas{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
