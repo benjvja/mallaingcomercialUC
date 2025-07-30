@@ -1,0 +1,72 @@
+
+/* === Inter font === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+:root{
+  --pc:#dbeafe;      /* plan común celeste claro */
+  --math:#e0f2fe;    /* mates/stat */
+  --econ:#bfdbfe;    /* economía */
+  --fin:#c7d2fe;     /* finanzas */
+  --adm:#fef9c3;     /* administración */
+  --fg:#e5e7eb;      /* formación general */
+  --minor:#fde68a;   /* opt/minor */
+  --approved:#34d399;
+  --text-dark:#0f172a;
+  --text-light:#f8fafc;
+}
+
+body{
+  margin:0;
+  background:#0d1117;
+  color:var(--text-light);
+  font-family:'Inter',sans-serif;
+  line-height:1.4;
+  scroll-behavior:smooth;
+}
+
+h1,h2{
+  margin:.25rem 0 .75rem;
+  font-weight:600;
+}
+
+#semesters{
+  padding-bottom:4rem;
+}
+
+.subject{
+  position:relative;
+  padding:.75rem .65rem;
+  border:2px solid #64748b5e;
+  border-radius:6px;
+  min-width:9.5rem;
+  background:var(--pc);
+  color:var(--text-dark);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s;
+  user-select:none;
+}
+.subject:not(.locked):hover{
+  transform:scale(1.04);
+  box-shadow:0 4px 14px -3px #0ea5e9aa;
+}
+.subject.locked{
+  opacity:.4;
+  filter:grayscale(1);
+  cursor:not-allowed;
+}
+.subject.done{
+  background:var(--approved);
+  color:var(--text-light);
+  border-color:transparent;
+}
+
+/* Category colors */
+.cat-math{background:var(--math);}
+.cat-econ{background:var(--econ);}
+.cat-fin{background:var(--fin);}
+.cat-adm{background:var(--adm);}
+.cat-fg{background:var(--fg);}
+.cat-minor{background:var(--minor);}
+
+/* Smooth fade on load */
+body{animation:fadeIn .5s ease-in;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
