@@ -56,12 +56,22 @@
 
     /* Grid de la malla */
     .malla {
-      /* Make the grid responsive: columns will wrap when the container is narrow */
+      /* Arrange the 10 semestres horizontally so progress is visualised left-to-right. */
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      /*
+       * Arrange the ten semesters as fixed‐width columns.  Using
+       * grid-auto-flow set to column and grid-auto-columns gives each
+       * semester a consistent width (260px) while still allowing the
+       * entire malla to scroll horizontally when the viewport is
+       * narrower than the total width.  The width of the grid is set
+       * implicitly by the number of columns and gaps, so a horizontal
+       * scrollbar appears when needed instead of squashing the columns.
+       */
+      grid-auto-flow: column;
+      grid-auto-columns: 260px;
       gap: 15px;
-      max-width: 1400px;
-      margin: 0 auto;
+      width: 100%;
+      overflow-x: auto;
       user-select: none;
     }
 
@@ -85,8 +95,9 @@
 
     /* Ramos */
     .ramos {
-      display: grid;
-      grid-template-columns: 1fr;
+      /* Stack the courses vertically inside each semester column */
+      display: flex;
+      flex-direction: column;
       gap: 8px;
     }
 
@@ -107,6 +118,13 @@
       cursor: pointer;
       color: #000;
       font-weight: 700;
+      /* Ensure each ramo takes full width of the semester column */
+      width: 100%;
+      /* Clip the approval slash inside the card so that diagonal lines
+       * do not spill outside the bounds of the course. This makes
+       * the strike-through appear neatly within each rectangle.
+       */
+      overflow: hidden;
     }
 
     .ramo:hover:not(.bloqueado):not(.hidden) {
@@ -184,18 +202,29 @@
 
     /* Estados */
     .ramo.bloqueado {
-      opacity: 0.4;
+      /* Keep the original pastel background for locked ramos but lower the opacity
+         and disable pointer events.  This preserves the aesthetic while signalling
+         that the course is locked. */
+      opacity: 0.5;
       cursor: not-allowed;
-      background: #f0f0f0;
-      border-color: #ddd;
-      color: #888 !important;
     }
     .ramo.aprobado::after {
+      /*
+       * Draw a diagonal line across the approved course to indicate
+       * completion.  Reduce the width to avoid an oversized slash
+       * stretching far beyond the card.  Keep the line thin and
+       * slightly shorter than the box for a subtler look.
+       */
       content: "";
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 150%;
+      /* Give the diagonal line plenty of length and rely on
+       * overflow:hidden on the parent to clip it to the card's
+       * bounds.  This ensures the slash spans corner to corner
+       * without extending far outside the card when rendered.
+       */
+      width: 200%;
       height: 2px;
       background-color: #333;
       transform: translate(-50%, -50%) rotate(-45deg);
@@ -225,6 +254,44 @@
       color: #666;
       font-weight: 700;
     }
+
+    /*
+     * Personalización de los botones de mención.
+     * Los colores de los botones se alinean con los colores de los ramos
+     * de cada mención: azul pastel para Economía y rosa pastel para
+     * Administración.  Los estados activo y hover aplican el color de
+     * fondo y borde correspondientes.  Cuando no están activos, los
+     * botones muestran sólo el borde de su color para mantener un
+     * aspecto ligero.
+     */
+    #btn-economia {
+      border-color: #90CAF9;
+      color: #0D47A1;
+    }
+    #btn-economia:hover {
+      background-color: #BBDEFB;
+      border-color: #90CAF9;
+      color: #000;
+    }
+    #btn-economia.active {
+      background-color: #BBDEFB;
+      border-color: #90CAF9;
+      color: #000;
+    }
+    #btn-admin {
+      border-color: #EF9A9A;
+      color: #C62828;
+    }
+    #btn-admin:hover {
+      background-color: #FFCDD2;
+      border-color: #EF9A9A;
+      color: #000;
+    }
+    #btn-admin.active {
+      background-color: #FFCDD2;
+      border-color: #EF9A9A;
+      color: #000;
+    }
   </style>
 </head>
 
@@ -233,9 +300,8 @@
   <nav class="navbar navbar-light bg-light justify-content-between mb-4">
     <span class="navbar-brand mb-0 h1">Malla Ingeniería Comercial UC</span>
     <div class="d-flex">
-      <button id="btn-economia" class="btn btn-outline-primary mr-2 active" onclick="cambiarMencion('economia')">Mención Economía</button>
-      <button id="btn-admin" class="btn btn-outline-primary mr-2" onclick="cambiarMencion('admin')">Mención Administración</button>
-      <button id="btn-reset" class="btn btn-outline-danger" onclick="reiniciarMalla()">Reiniciar Progreso</button>
+      <button id="btn-economia" class="btn mr-2 active" onclick="cambiarMencion('economia')">Mención Economía</button>
+      <button id="btn-admin" class="btn mr-2" onclick="cambiarMencion('admin')">Mención Administración</button>
     </div>
   </nav>
 
@@ -387,6 +453,11 @@
     <div><span class="leyenda-circle examen"></span>Examen</div>
     </div>
   </div> <!-- cierre container -->
+
+  <!-- Botón de reinicio al fondo de la página -->
+  <div class="text-center my-3">
+    <button id="btn-reset" class="btn btn-outline-danger" onclick="reiniciarMalla()">Reiniciar Progreso</button>
+  </div>
 
   <script>
     let mencionActual = 'economia';
