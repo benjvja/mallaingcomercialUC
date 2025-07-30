@@ -1,117 +1,83 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
 
-/* — Variables pastel */
-:root {
-  --pc:    #f0f4f8;
-  --math:  #fef3c7;
-  --econ:  #dbeafe;
-  --fin:   #ede9fe;
-  --adm:   #fde2e1;
-  --fg:    #f5f5f5;
-  --opt:   #fff1f0;
-  --text:  #000;      /* Texto negro */
-  --line:  #ccc;
-  --strike:#999;
-}
-
-/* — Global */
-* { box-sizing: border-box; }
 body {
-  margin: 0; padding: 1rem;
-  font-family: 'Inter', sans-serif;
-  background: #fff; color: var(--text);
-}
-h1 {
-  text-align: center; margin-bottom: 1rem;
-  font-weight: 600; color: var(--text);
-}
-p {
-  text-align: center; margin-bottom: 1.5rem;
-  color: var(--text);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f9;
+  margin: 0 auto;
+  padding: 20px;
+  color: #212121;
+  max-width: 1100px;
 }
 
-/* — Grid de semestres */
+h1 {
+  text-align: center;
+  color: #003366;
+  margin-bottom: 30px;
+}
+
 .malla {
   display: grid;
-  grid-template-columns: repeat(10,1fr);
-  gap: 1rem;
-  max-width: 1200px;
-  margin: 0 auto 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
 }
+
 .semestre {
-  display: flex; flex-direction: column; align-items: center;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
 }
+
 .semestre h2 {
-  font-size: .85rem; font-weight: 600;
-  margin-bottom: .5rem; color: var(--text);
-}
-
-/* — Tarjetas minimal */
-.ramos {
-  display: grid; gap: .5rem; width: 100%;
-}
-.ramo {
-  position: relative;
-  padding: .5rem;
-  background: var(--pc);
-  border: 1px solid var(--line);
-  border-radius: 6px;
   text-align: center;
-  font-size: .75rem;
+  color: #004b8d;
+  margin-bottom: 10px;
+}
+
+.ramo {
+  background: #e3f2fd;
+  border-left: 6px solid #90caf9;
+  padding: 10px;
+  border-radius: 5px;
+  margin: 5px 0;
+  font-weight: 500;
+  transition: background 0.2s ease;
   cursor: pointer;
-  transition: background .2s, border-color .2s;
-  color: var(--text) !important;       /* fuerza texto negro */
 }
 
-/* — Hover y locked */
-.ramo:not(.locked):hover {
-  background: #f0f8ff;
-  border-color: #b0c4de;
+.ramo:hover {
+  background: #d0ebff;
 }
+
 .ramo.locked {
-  opacity: .4;
-  cursor: not-allowed;
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-/* — Colores por categoría (solo fondo y bordes) */
-.ramo.mat   { background: var(--math); }
-.ramo.econ  { background: var(--econ); }
-.ramo.fin   { background: var(--fin); }
-.ramo.adm   { background: var(--adm); }
-.ramo.fg    { background: var(--fg); }
-.ramo.opt   { background: var(--opt); }
-
-/* — Aprobado: tachado minimal */
 .ramo.approved {
-  opacity: .7;
-  text-decoration: line-through var(--strike) 2px;
+  background-color: #c8e6c9 !important;
+  text-decoration: line-through;
 }
 
-/* — Leyenda */
-#legend {
-  max-width: 1200px;
-  margin: 0 auto 1rem;
-  display: flex; flex-wrap: wrap; gap: 1rem;
-  font-size: .85rem; color: var(--text);
-}
-#legend div {
-  display: flex; align-items: center; gap: .5rem;
-}
-#legend span {
-  width: 14px; height: 14px; display: block;
-  border: 1px solid var(--line);
-  border-radius: 4px;
-  background: currentColor;
+.creditos {
+  float: right;
+  font-size: 0.85em;
+  color: #555;
 }
 
-/* — Progress bar */
 #progress-bar {
-  max-width: 1200px; margin: 0 auto 2rem;
-  background: var(--fg); height: 8px;
-  border-radius: 4px; overflow: hidden;
+  background: #e0e0e0;
+  height: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  overflow: hidden;
 }
+
 #progress-fill {
-  height:100%; width:0%;
-  background: var(--econ);
-  transition: width .4s ease;
+  background: #4caf50;
+  height: 100%;
+  width: 0;
+  transition: width 0.4s ease-in-out;
 }
