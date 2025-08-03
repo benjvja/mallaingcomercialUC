@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8">
 	<title>Ramos</title>
+	<!-- Habilita la correcta visualización en dispositivos móviles y tablets -->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta property="og:title" content="Malla Interactiva" />
 	<meta property="og:url" content="http://labcomp.cl/~saedo/apps/viz/ramos" />
 	<meta property="og:image" content="http://labcomp.cl/~saedo/apps/viz/ramos/thumbnail.png" />
@@ -26,11 +28,14 @@
   </script>
   </head>
   <style>
-		body {
-			display: inline;
-			text-align: center;
-			justify-content:center;
-		}
+        /* Ajustes de estilo para mejorar la visualización en móviles */
+        body {
+            display: block;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            overflow-x: auto;
+        }
 		html {
 			font-family: sans-serif;
 		}
@@ -38,6 +43,17 @@
 		.info {
 			font-size: 30px;
 		}
+
+        /* Hace que el SVG de la malla se adapte al ancho de la pantalla */
+        .canvas svg {
+            width: 100%;
+            height: auto;
+        }
+
+        /* Evita que la malla se salga horizontalmente en pantallas estrechas */
+        .canvas {
+            overflow-x: auto;
+        }
 
   </style>  
 

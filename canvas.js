@@ -16,36 +16,51 @@ if (window.location.search) {
 	
 }
 if (d3.select(".canvas")._groups[0][0]) {
-	
-	scaleX = 1;
-	scaleY = 1;
-	canvas = d3.select(".canvas");
-	tipoRamo = Ramo;
-	welcomeTitle = `¡Bienvenido a la Malla Interactiva de `
-	welcomeDesc = `Puedes tachar tus ramos aprobados haciendo click sobre ellos.
-	A medida que vas aprobando ramos, se van liberando los que tienen prerrequisitos.
-	Haz click en cualquier lado para comenzar.`
+    // Para dispositivos móviles reducimos la escala para mejorar la visualización
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+
+    scaleX = 1;
+    scaleY = 1;
+    if (isMobile) {
+        scaleX *= 0.6;
+        scaleY *= 0.6;
+    }
+    canvas = d3.select(".canvas");
+    tipoRamo = Ramo;
+    welcomeTitle = `¡Bienvenido a la Malla Interactiva de `
+    welcomeDesc = `Puedes tachar tus ramos aprobados haciendo click sobre ellos.
+    A medida que vas aprobando ramos, se van liberando los que tienen prerrequisitos.
+    Haz click en cualquier lado para comenzar.`
 
 }	else if (d3.select(".priori-canvas")._groups[0][0]) {
-	
-	scaleX = 0.67;
-	scaleY = 1;
-	canvas = d3.select(".priori-canvas");
-	tipoRamo = SelectableRamo;
-	welcomeTitle = `¡Bienvenido a la calculadora de prioridad `
-	welcomeDesc = `¡Selecciona los ramos por semestre e ingresa tus notas para
-	 calcular tu prioridad! A medida que avances de semestre, los ramos aprobados se
-	 tacharán automaticamente. Si has cursado un ramo que no esta en la malla,
-	 crealo en la tabla de abajo.`;
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    scaleX = 0.67;
+    scaleY = 1;
+    if (isMobile) {
+        scaleX *= 0.8;
+        scaleY *= 0.8;
+    }
+    canvas = d3.select(".priori-canvas");
+    tipoRamo = SelectableRamo;
+    welcomeTitle = `¡Bienvenido a la calculadora de prioridad `
+    welcomeDesc = `¡Selecciona los ramos por semestre e ingresa tus notas para
+     calcular tu prioridad! A medida que avances de semestre, los ramos aprobados se
+     tacharán automaticamente. Si has cursado un ramo que no esta en la malla,
+     crealo en la tabla de abajo.`;
 
 } else if (d3.select(".custom-canvas")._groups[0][0]) {
-	scaleX = 0.67;
-	scaleY = 1;
-	canvas = d3.select(".custom-canvas");
-	tipoRamo = SelectableRamo;
-	welcomeTitle = `¡Bienvenido a la generadora de mallas!`
-	welcomeDesc = `¡Selecciona los ramos por semestre y genera una malla a tu gusto!
-	Si quieres un ramo que no esta en la malla,crealo en la tabla de abajo.`;
+    var isMobile = window.matchMedia('(max-width: 768px)').matches;
+    scaleX = 0.67;
+    scaleY = 1;
+    if (isMobile) {
+        scaleX *= 0.8;
+        scaleY *= 0.8;
+    }
+    canvas = d3.select(".custom-canvas");
+    tipoRamo = SelectableRamo;
+    welcomeTitle = `¡Bienvenido a la generadora de mallas!`;
+    welcomeDesc = `¡Selecciona los ramos por semestre y genera una malla a tu gusto!
+    Si quieres un ramo que no esta en la malla,crealo en la tabla de abajo.`;
 }
 
 var height = 730 * scaleX,
@@ -150,24 +165,26 @@ const datasets = {
       ["Práctica Social", "EAF2500", 10, "PRACT", ["EAE2120","EAE2210","EAA2110","EAA2220","EAA2310"]],
       ["Formación General", "FG6", 10, "FORM"]
     ],
-    // Ajuste de la mención Administración: en semestre 9 se eliminan los cursos de Economía
-    // para que sólo se visualicen los ramos de Administración (Dirección y Estrategia,
-    // Dirección Financiera y Gestión de Operaciones) junto a dos optativos. En semestre 10
-    // se mantienen los cursos de Creación de Nuevas Empresas y Liderazgo Estratégico, dos
-    // optativos y la práctica profesional de Administración.
     "s9": [
+      ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
+      ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
+      ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
+      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
       ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
       ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
       ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
       ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"]
+      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
+      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
     ],
     "s10": [
+      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
+      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
       ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
       ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
-      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_4", 10, "OPT"],
-      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]]
+      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
+      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
+      ["Optativo de Profundización", "OPT6", 10, "OPT"]
     ]
   },
   // La malla de Economía es idéntica a la de Administración en estos archivos,
