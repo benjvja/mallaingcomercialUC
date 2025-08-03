@@ -39,7 +39,6 @@
 	"s6": [
 	  ["Opt. de Profundización/Minor", "OPM1", 10, "OPM"],
 	  ["Estrategia Competitiva", "EAA2420", 10, "ADMIN", ["EAA2410","EAE2120"]],
-	  ["Competencia y Mercado", "EAE2130", 10, "ECON", ["EAE2120"]],
 	  ["Contabilidad de Costos", "EAA2220", 5, "ADMIN", ["EAA2410"]],
 	  ["Marketing Analytics", "EAA2320", 10, "ADMIN", ["EAE2510","EAA2310"]],
 	  ["Ética, Economía y Empresa", "ETI209", 10, "MAT", ["EAA2410","EAE1220"]],
@@ -61,20 +60,19 @@
 	  ["Formación General", "FG6", 10, "FORM"]
 	],
 "s9": [
-  // En el noveno semestre de Administración sólo se cursan ramos de administración y dos optativos
-  ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADM", ["EAA2110", "EAA2240", "EAA2320"]],
-  ["Dirección Financiera", "EAA3201", 10, "ADM", ["EAA2240"]],
-  ["Gestión de Operaciones", "EAA3501", 10, "ADM", ["EAE2510", "EAA2420"]],
+  ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110", "EAA2240", "EAA2320"]],
+  ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
+  ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510", "EAE2130", "EAA2240"]],
   ["Optativo de Profundización", "EAA3OPT1", 10, "OPT"],
   ["Optativo de Profundización", "EAA3OPT2", 10, "OPT"]
 ],
 "s10": [
-  // Décimo semestre de Administración: se incluyen creación de empresas, liderazgo, dos optativos y la práctica
-  ["Creación de Nuevas Empresas", "EAA3601", 10, "ADM", ["EAA3401", "EAA3201", "EAA2420"]],
-  ["Liderazgo Estratégico", "EAA3101", 5, "ADM", ["EAA2110", "EAA3401"]],
+  ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401", "EAA3201", "EAA2420"]],
+  ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110", "EAA3401"]],
   ["Optativo de Profundización", "EAA3OPT3", 10, "OPT"],
   ["Optativo de Profundización", "EAA3OPT4", 10, "OPT"],
-  ["Práctica Profesional", "EAA3500", 15, "PRACT", ["EAF2500"]]
+  ["Práctica Profesional", "EAA2500", 15, "PRACT", ["EAA3601"]],
+  ["Proyecto de Título", "EAA3500", 15, "EXAM", ["EAA3101"]]
 ]
 
   }

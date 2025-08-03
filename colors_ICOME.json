@@ -7,5 +7,7 @@
 	"PRACT": ["#8BC34A", "Práctica"],
 	"OPM": ["#FF5722", "Opt. Profundización"],
 	"OPT": ["#795548", "Optativo"]
+  ,
+  "EXAM": ["#673AB7", "Examen/Proyecto"]
   }
   

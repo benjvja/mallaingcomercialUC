@@ -16,51 +16,36 @@ if (window.location.search) {
 	
 }
 if (d3.select(".canvas")._groups[0][0]) {
-    // Para dispositivos móviles reducimos la escala para mejorar la visualización
-    var isMobile = window.matchMedia('(max-width: 768px)').matches;
-
-    scaleX = 1;
-    scaleY = 1;
-    if (isMobile) {
-        scaleX *= 0.6;
-        scaleY *= 0.6;
-    }
-    canvas = d3.select(".canvas");
-    tipoRamo = Ramo;
-    welcomeTitle = `¡Bienvenido a la Malla Interactiva de `
-    welcomeDesc = `Puedes tachar tus ramos aprobados haciendo click sobre ellos.
-    A medida que vas aprobando ramos, se van liberando los que tienen prerrequisitos.
-    Haz click en cualquier lado para comenzar.`
+	
+	scaleX = 1;
+	scaleY = 1;
+	canvas = d3.select(".canvas");
+	tipoRamo = Ramo;
+	welcomeTitle = `¡Bienvenido a la Malla Interactiva de `
+	welcomeDesc = `Puedes tachar tus ramos aprobados haciendo click sobre ellos.
+	A medida que vas aprobando ramos, se van liberando los que tienen prerrequisitos.
+	Haz click en cualquier lado para comenzar.`
 
 }	else if (d3.select(".priori-canvas")._groups[0][0]) {
-    var isMobile = window.matchMedia('(max-width: 768px)').matches;
-    scaleX = 0.67;
-    scaleY = 1;
-    if (isMobile) {
-        scaleX *= 0.8;
-        scaleY *= 0.8;
-    }
-    canvas = d3.select(".priori-canvas");
-    tipoRamo = SelectableRamo;
-    welcomeTitle = `¡Bienvenido a la calculadora de prioridad `
-    welcomeDesc = `¡Selecciona los ramos por semestre e ingresa tus notas para
-     calcular tu prioridad! A medida que avances de semestre, los ramos aprobados se
-     tacharán automaticamente. Si has cursado un ramo que no esta en la malla,
-     crealo en la tabla de abajo.`;
+	
+	scaleX = 0.67;
+	scaleY = 1;
+	canvas = d3.select(".priori-canvas");
+	tipoRamo = SelectableRamo;
+	welcomeTitle = `¡Bienvenido a la calculadora de prioridad `
+	welcomeDesc = `¡Selecciona los ramos por semestre e ingresa tus notas para
+	 calcular tu prioridad! A medida que avances de semestre, los ramos aprobados se
+	 tacharán automaticamente. Si has cursado un ramo que no esta en la malla,
+	 crealo en la tabla de abajo.`;
 
 } else if (d3.select(".custom-canvas")._groups[0][0]) {
-    var isMobile = window.matchMedia('(max-width: 768px)').matches;
-    scaleX = 0.67;
-    scaleY = 1;
-    if (isMobile) {
-        scaleX *= 0.8;
-        scaleY *= 0.8;
-    }
-    canvas = d3.select(".custom-canvas");
-    tipoRamo = SelectableRamo;
-    welcomeTitle = `¡Bienvenido a la generadora de mallas!`;
-    welcomeDesc = `¡Selecciona los ramos por semestre y genera una malla a tu gusto!
-    Si quieres un ramo que no esta en la malla,crealo en la tabla de abajo.`;
+	scaleX = 0.67;
+	scaleY = 1;
+	canvas = d3.select(".custom-canvas");
+	tipoRamo = SelectableRamo;
+	welcomeTitle = `¡Bienvenido a la generadora de mallas!`
+	welcomeDesc = `¡Selecciona los ramos por semestre y genera una malla a tu gusto!
+	Si quieres un ramo que no esta en la malla,crealo en la tabla de abajo.`;
 }
 
 var height = 730 * scaleX,
@@ -144,7 +129,6 @@ const datasets = {
     "s6": [
       ["Opt. de Profundización/Minor", "OPM1", 10, "OPM"],
       ["Estrategia Competitiva", "EAA2420", 10, "ADMIN", ["EAA2410","EAE2120"]],
-      ["Competencia y Mercado", "EAE2130", 10, "ECON", ["EAE2120"]],
       ["Contabilidad de Costos", "EAA2220", 5, "ADMIN", ["EAA2410"]],
       ["Marketing Analytics", "EAA2320", 10, "ADMIN", ["EAE2510","EAA2310"]],
       ["Ética, Economía y Empresa", "ETI209", 10, "MAT", ["EAA2410","EAE1220"]],
@@ -166,25 +150,19 @@ const datasets = {
       ["Formación General", "FG6", 10, "FORM"]
     ],
     "s9": [
-      ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
-      ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
-      ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
       ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
       ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
-      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
-      ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
+      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAE2130","EAA2240"]],
+      ["Optativo de Profundización", "EAA3x_1", 10, "OPT"],
+      ["Optativo de Profundización", "EAA3x_2", 10, "OPT"]
     ],
     "s10": [
-      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
-      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
       ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
       ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
-      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
-      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
-      ["Optativo de Profundización", "OPT6", 10, "OPT"]
+      ["Optativo de Profundización", "EAA3x_3", 10, "OPT"],
+      ["Optativo de Profundización", "EAA3x_4", 10, "OPT"],
+      ["Práctica Profesional", "EAA2500", 15, "PRACT", ["EAA3601"]],
+      ["Proyecto de Título", "EAA3500", 15, "EXAM", ["EAA3101"]]
     ]
   },
   // La malla de Economía es idéntica a la de Administración en estos archivos,
@@ -232,7 +210,6 @@ const datasets = {
       ["Estrategia Competitiva", "EAA2420", 10, "ADMIN", ["EAA2410","EAE2120"]],
       ["Competencia y Mercado", "EAE2130", 10, "ECON", ["EAE2120"]],
       ["Contabilidad de Costos", "EAA2220", 5, "ADMIN", ["EAA2410"]],
-      ["Marketing Analytics", "EAA2320", 10, "ADMIN", ["EAE2510","EAA2310"]],
       ["Ética, Economía y Empresa", "ETI209", 10, "MAT", ["EAA2410","EAE1220"]],
       ["Formación General", "FG4", 10, "FORM"]
     ],
@@ -255,22 +232,16 @@ const datasets = {
       ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
       ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
       ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
-      ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
-      ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
-      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
+      ["Macroeconomía Internacional", "EAE3210", 10, "ECON", ["EAE2210","EAE2220"]],
       ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
       ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
       ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
     ],
     "s10": [
-      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
-      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
-      ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
-      ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
-      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
-      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
-      ["Optativo de Profundización", "OPT6", 10, "OPT"]
+      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE3210","EAE3101","EAE3102","EAE350B"]],
+      ["Optativo de Profundización", "EAE3x_4", 10, "OPT"],
+      ["Optativo de Profundización", "EAE3x_5", 10, "OPT"],
+      ["Práctica Profesional", "EAE3500", 15, "PRACT", ["EAE3601"]]
     ]
   }
 };
@@ -285,6 +256,8 @@ const colorSets = {
     "PRACT": ["#8BC34A", "Práctica"],
     "OPM": ["#FF5722", "Opt. Profundización"],
     "OPT": ["#795548", "Optativo"]
+    ,
+    "EXAM": ["#673AB7", "Examen/Proyecto"]
   },
   'ICOME': {
     "MAT": ["#4CAF50", "Matemáticas"],
@@ -295,6 +268,8 @@ const colorSets = {
     "PRACT": ["#8BC34A", "Práctica"],
     "OPM": ["#FF5722", "Opt. Profundización"],
     "OPT": ["#795548", "Optativo"]
+    ,
+    "EXAM": ["#673AB7", "Examen/Proyecto"]
   }
 };
 

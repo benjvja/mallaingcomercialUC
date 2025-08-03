@@ -41,7 +41,6 @@
      ["Estrategia Competitiva", "EAA2420", 10, "ADMIN", ["EAA2410","EAE2120"]],
      ["Competencia y Mercado", "EAE2130", 10, "ECON", ["EAE2120"]],
      ["Contabilidad de Costos", "EAA2220", 5, "ADMIN", ["EAA2410"]],
-     ["Marketing Analytics", "EAA2320", 10, "ADMIN", ["EAE2510","EAA2310"]],
      ["Ética, Economía y Empresa", "ETI209", 10, "MAT", ["EAA2410","EAE1220"]],
      ["Formación General", "FG4", 10, "FORM"]
    ],
@@ -61,23 +60,19 @@
      ["Formación General", "FG6", 10, "FORM"]
    ],
 "s9": [
-  // Conjunto de cursos alternativos para el 9º semestre de Economía
-  ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120", "EAE2510"]],
-  ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220", "EAE2510"]],
+  ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
+  ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
   ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-  // Macroeconomía Internacional mantiene sus prerrequisitos correctos
-  ["Macroeconomía Internacional", "EAE3210", 10, "ECON", ["EAE2120", "EAE2220"]],
-  // Tres optativos de profundización para completar el semestre
+  ["Macroeconomía Internacional", "EAE3210", 10, "ECON", ["EAE2210","EAE2220"]],
   ["Optativo de Profundización", "EAE3OPT1", 10, "OPT"],
   ["Optativo de Profundización", "EAE3OPT2", 10, "OPT"],
   ["Optativo de Profundización", "EAE3OPT3", 10, "OPT"]
 ],
 "s10": [
-  // Semestre 10: ramo integrador, dos optativos y práctica profesional
-  ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130", "EAE3210"]],
+  ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE3210","EAE3101","EAE3102","EAE350B"]],
   ["Optativo de Profundización", "EAE3OPT4", 10, "OPT"],
   ["Optativo de Profundización", "EAE3OPT5", 10, "OPT"],
-  ["Práctica Profesional", "EAE3500", 15, "PRACT", ["EAF2500"]]
+  ["Práctica Profesional", "EAE3500", 15, "PRACT", ["EAE3601"]]
 ]
 
  }
