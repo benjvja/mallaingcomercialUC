@@ -151,25 +151,18 @@ const datasets = {
       ["Formación General", "FG6", 10, "FORM"]
     ],
     "s9": [
-      ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
-      ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
-      ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
-      ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
-      ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
-      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
-      ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
+      ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADM", ["EAA2110","EAA2240"]],
+      ["Creación de Nuevas Empresas", "EAA3601", 10, "ADM", ["EAA3401","EAA3201"]],
+      ["Dirección Financiera", "EAA3201", 10, "ADM", ["EAA2240"]],
+      ["Liderazgo Estratégico", "EAA3101", 5, "ADM", ["EAA3401"]],
+      ["Gestión de Operaciones", "EAA3501", 10, "ADM", ["EAE2510","EAE2130","EAA2240"]],
+      ["Optativo de Profundización", "EAA3OPT1", 10, "OPT"]
     ],
     "s10": [
-      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
-      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
-      ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
-      ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
-      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
-      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
-      ["Optativo de Profundización", "OPT6", 10, "OPT"]
+      ["Optativo de Profundización", "EAA3OPT2", 10, "OPT"],
+      ["Optativo de Profundización", "EAA3OPT3", 10, "OPT"],
+      ["Práctica Profesional", "EAA2500", 15, "PRACT", ["EAA3601"]],
+      ["Proyecto de Título", "EAA3500", 15, "EXAM", ["EAA3101"]]
     ]
   },
   // La malla de Economía es idéntica a la de Administración en estos archivos,
@@ -237,25 +230,18 @@ const datasets = {
       ["Formación General", "FG6", 10, "FORM"]
     ],
     "s9": [
-      ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
-      ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
-      ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
-      ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
-      ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
-      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
-      ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
+      ["Macroeconomía Internacional", "EAE3210", 10, "ECON", ["EAE2210","EAE2220"]],
+      ["Microeconometría Aplicada", "EAE3110", 10, "ECON", ["EAE2510"]],
+      ["Teoría Económica I", "EAE3501", 10, "ECON", ["EAE2510"]],
+      ["Optativo de Profundización", "EAE3OPT1", 10, "OPT"],
+      ["Optativo de Profundización", "EAE3OPT2", 10, "OPT"],
+      ["Optativo de Profundización", "EAE3OPT3", 10, "OPT"]
     ],
     "s10": [
-      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
-      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
-      ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
-      ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
-      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
-      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
-      ["Optativo de Profundización", "OPT6", 10, "OPT"]
+      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE3210","EAE3110","EAE3501"]],
+      ["Optativo de Profundización", "EAE3OPT4", 10, "OPT"],
+      ["Optativo de Profundización", "EAE3OPT5", 10, "OPT"],
+      ["Práctica Profesional", "EAE2500", 15, "PRACT", ["EAE3601"]]
     ]
   }
 };
@@ -270,6 +256,11 @@ const colorSets = {
     "PRACT": ["#8BC34A", "Práctica"],
     "OPM": ["#FF5722", "Opt. Profundización"],
     "OPT": ["#795548", "Optativo"]
+    ,
+    // Nuevas categorías de ramos añadidas en la malla: ADM reutiliza el color
+    // de Administración para los cursos avanzados y EXAM representa proyectos o exámenes finales.
+    "ADM": ["#FFC107", "Administración"],
+    "EXAM": ["#9C27B0", "Examen"]
   },
   'ICOME': {
     "MAT": ["#4CAF50", "Matemáticas"],
