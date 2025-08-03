@@ -7,5 +7,9 @@
 	"PRACT": ["#8BC34A", "Práctica"],
 	"OPM": ["#FF5722", "Opt. Profundización"],
 	"OPT": ["#795548", "Optativo"]
+  ,
+  // Categorías adicionales para la mención Administración y el proyecto de título.
+  "ADM": ["#FFC107", "Administración"],
+  "EXAM": ["#9C27B0", "Examen/Proyecto"]
   }
   

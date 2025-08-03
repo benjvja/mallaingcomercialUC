@@ -63,13 +63,13 @@
 "s9": [
   ["Macroeconomía Internacional", "EAE3210", 10, "ECON", ["EAE2210", "EAE2220"]],
   ["Microeconometría Aplicada", "EAE3110", 10, "ECON", ["EAE2510"]],
-  ["Teoría Económica I", "EAE3501", 10, "ECON", ["EAE2510"]],
+  ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
   ["Optativo de Profundización", "EAE3OPT1", 10, "OPT"],
   ["Optativo de Profundización", "EAE3OPT2", 10, "OPT"],
   ["Optativo de Profundización", "EAE3OPT3", 10, "OPT"]
 ],
 "s10": [
-  ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE3210", "EAE3110", "EAE3501"]],
+  ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE3210", "EAE3110", "EAE350B"]],
   ["Optativo de Profundización", "EAE3OPT4", 10, "OPT"],
   ["Optativo de Profundización", "EAE3OPT5", 10, "OPT"],
   ["Práctica Profesional", "EAE2500", 15, "PRACT", ["EAE3601"]]
