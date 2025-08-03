@@ -62,7 +62,7 @@
 "s9": [
   ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110", "EAA2240", "EAA2320"]],
   ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
-  ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510", "EAE2130", "EAA2240"]],
+  ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510", "EAA2240"]],
   ["Optativo de Profundización", "EAA3OPT1", 10, "OPT"],
   ["Optativo de Profundización", "EAA3OPT2", 10, "OPT"]
 ],
@@ -72,7 +72,6 @@
   ["Optativo de Profundización", "EAA3OPT3", 10, "OPT"],
   ["Optativo de Profundización", "EAA3OPT4", 10, "OPT"],
   ["Práctica Profesional", "EAA2500", 15, "PRACT", ["EAA3601"]],
-  ["Proyecto de Título", "EAA3500", 15, "EXAM", ["EAA3101"]]
 ]
 
   }

@@ -152,7 +152,11 @@ const datasets = {
     "s9": [
       ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
       ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
-      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAE2130","EAA2240"]],
+      // El prerrequisito original incluía EAE2130 (Competencia y Mercado),
+      // que no existe en la malla de Administración y provocaba que el script
+      // se detuviera al dibujar este ramo. Removemos esa sigla para
+      // evitar referencias a un ramo inexistente.
+      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2240"]],
       ["Optativo de Profundización", "EAA3x_1", 10, "OPT"],
       ["Optativo de Profundización", "EAA3x_2", 10, "OPT"]
     ],
@@ -162,7 +166,6 @@ const datasets = {
       ["Optativo de Profundización", "EAA3x_3", 10, "OPT"],
       ["Optativo de Profundización", "EAA3x_4", 10, "OPT"],
       ["Práctica Profesional", "EAA2500", 15, "PRACT", ["EAA3601"]],
-      ["Proyecto de Título", "EAA3500", 15, "EXAM", ["EAA3101"]]
     ]
   },
   // La malla de Economía es idéntica a la de Administración en estos archivos,
@@ -315,82 +318,143 @@ function main_function(error, data, colorBySector) {
 		$(".canvas").prepend("<h1>OPS!, malla no encontrada, <a href='http://labcomp.cl/~saedo/apps/viz/ramos'>Volver al inicio</a></h1>");
 		return;
 	}
-	// load the data
-	let longest_semester = 0;
-	for (var semester in data) {
-		malla[semester] = {};
+    // -------------------------------------------------------------------------
+    // Cargar y preparar los datos de forma ordenada. Obtenemos una lista
+    // ordenada de las claves de semestre (s1, s2, …, s10) para garantizar que
+    // se dibujen en orden ascendente. Reiniciamos las estructuras globales
+    // antes de llenarlas para evitar acumulación al cambiar de malla.
+    const semesterKeys = Object.keys(data).sort((a, b) => {
+        const aNum = parseInt(a.replace(/^s/, ''), 10);
+        const bNum = parseInt(b.replace(/^s/, ''), 10);
+        return aNum - bNum;
+    });
 
-		if (data[semester].length > longest_semester)
-			longest_semester = data[semester].length;
+    // Reiniciar datos globales
+    malla = {};
+    all_ramos = {};
+    total_creditos = 0;
+    total_ramos = 0;
+    globalX = 0;
+    globalY = 0;
+    _semester = 1;
 
-		data[semester].forEach(function(ramo) {
-			malla[semester][ramo[1]] = new tipoRamo(ramo[0], ramo[1], ramo[2], ramo[3], (function() {
-				if (ramo.length > 4)
-					return ramo[4];
-				return [];
-			})(), id++, colorBySector)
-			all_ramos[ramo[1]] = malla[semester][ramo[1]];
+    // Construir la estructura `malla` y calcular el semestre más largo
+    let longest_semester = 0;
+    semesterKeys.forEach(function(key) {
+        malla[key] = {};
+        if (data[key].length > longest_semester) longest_semester = data[key].length;
+        data[key].forEach(function(ramo) {
+            malla[key][ramo[1]] = new tipoRamo(
+                ramo[0],        // nombre
+                ramo[1],        // sigla
+                ramo[2],        // créditos
+                ramo[3],        // sector
+                (function() {
+                    // prerrequisitos (puede no venir definido)
+                    if (ramo.length > 4) return ramo[4];
+                    return [];
+                })(),
+                id++,           // identificador
+                colorBySector
+            );
+            all_ramos[ramo[1]] = malla[key][ramo[1]];
             total_creditos += ramo[2];
             total_ramos++;
-		});
-	}
+        });
+    });
 
-	// update width y height debido a que varian segun la malla
-		// + 10 para evitar ocultamiento de parte de la malla
-	width = (130*Object.keys(malla).length) * scaleX + 10;
-	height = (110*longest_semester + 30 + 25) * scaleY + 10;
+    // -------------------------------------------------------------------------
+    // Ajustar la escala horizontal automáticamente para dispositivos móviles.
+    // Calculamos el ancho requerido y lo comparamos con el ancho disponible
+    // (ancho de la ventana menos un margen). Si el espacio disponible es más
+    // pequeño que el requerido, reducimos scaleX para que la malla quepa en
+    // pantalla. Establecemos un límite inferior de 0.5 para mantener la
+    // legibilidad de los ramos.
+    const baseColumnWidth = 130;
+    const requiredWidth = baseColumnWidth * semesterKeys.length;
+    // Determinar el ancho disponible tomando la anchura real del contenedor
+    // `.canvas` en lugar de `window.innerWidth`. Esto evita problemas cuando
+    // el contenido está embebido o hay barras de desplazamiento vertical.
+    let containerWidth = 0;
+    try {
+        const canvasContainer = document.querySelector('.canvas');
+        if (canvasContainer) {
+            containerWidth = canvasContainer.getBoundingClientRect().width;
+        } else {
+            containerWidth = document.documentElement.clientWidth;
+        }
+    } catch (e) {
+        containerWidth = window.innerWidth;
+    }
+    // Restamos un margen para evitar cortar el último semestre
+    const availableWidth = containerWidth - 20;
+    // Si el ancho disponible es menor al requerido, ajustamos la escala. En
+    // caso contrario, dejamos scaleX en 1. Nunca reducimos scaleX por debajo
+    // de 0.5 para no hacer demasiado pequeños los ramos.
+    let computedScaleX = 1;
+    if (availableWidth < requiredWidth) {
+        computedScaleX = Math.max(availableWidth / requiredWidth, 0.5);
+    }
+    if (d3.select(".canvas")._groups[0][0]) {
+        scaleX = computedScaleX;
+    }
 
-	canvas.attr("width", width)
-		.attr("height", height);
-	drawer.attr("width", width)
-		.attr("height", height);
+    // Calcular dimensiones del SVG. Se añade un margen para evitar que la
+    // última columna quede cortada.
+    width = (baseColumnWidth * semesterKeys.length) * scaleX + 10;
+    height = (110 * longest_semester + 30 + 25) * scaleY + 10;
 
-	// colores de la malla
-	Object.keys(colorBySector).forEach(key => {
-		color_description = d3.select(".color-description").append("div")
-			.attr("style", "display:flex;vertical-align:middle;margin-right:15px;");
-		circle_color = color_description.append("svg")
-			.attr("height", "25px")
-			.attr("width", "25px");
-		circle_color.append("circle")
-			.attr("r", 10)
-			.attr("cx", 12)
-			.attr("cy", 12)
-			.attr("fill", colorBySector[key][0]);
+    canvas.attr("width", width)
+        .attr("height", height);
+    drawer.attr("width", width)
+        .attr("height", height);
 
-		color_description.append("span").text(colorBySector[key][1]);
+    // Dibujar leyenda de colores
+    Object.keys(colorBySector).forEach(key => {
+        const color_description = d3.select(".color-description").append("div")
+            .attr("style", "display:flex;vertical-align:middle;margin-right:15px;");
+        const circle_color = color_description.append("svg")
+            .attr("height", "25px")
+            .attr("width", "25px");
+        circle_color.append("circle")
+            .attr("r", 10)
+            .attr("cx", 12)
+            .attr("cy", 12)
+            .attr("fill", colorBySector[key][0]);
 
-	});
+        color_description.append("span").text(colorBySector[key][1]);
+    });
 
-	for (var semester in malla) {
-		globalY = 0;
-		// draw the axis
-		drawer.append("rect")
-			.attr("x", globalX)
-			.attr("y", globalY)
-			.attr("width", 120 * scaleX)
-			.attr("height", 30 * scaleY)
-			.attr("fill", 'gray');
+    // Dibujar cada semestre en orden
+    semesterKeys.forEach(function(semKey) {
+        globalY = 0;
+        // encabezado del semestre
+        drawer.append("rect")
+            .attr("x", globalX)
+            .attr("y", globalY)
+            .attr("width", 120 * scaleX)
+            .attr("height", 30 * scaleY)
+            .attr("fill", 'gray');
 
-		drawer.append("text")
-			.attr('x', globalX + 110/2 * scaleX)
-			.attr('y', globalY + 2*30/3 * scaleY)
-			.text(_s[_semester-1])
-			.attr('text-anchor', 'middle')
-			.attr("font-family", "sans-serif")
-			.attr("font-weight", "bold")
-			.attr("fill", "white");
-		_semester++;
-		globalY += 40 * scaleY;
+        drawer.append("text")
+            .attr('x', globalX + (110 / 2) * scaleX)
+            .attr('y', globalY + (2 * 30 / 3) * scaleY)
+            .text(_s[_semester - 1])
+            .attr('text-anchor', 'middle')
+            .attr("font-family", "sans-serif")
+            .attr("font-weight", "bold")
+            .attr("fill", "white");
+        _semester++;
+        globalY += 40 * scaleY;
 
-		for (var ramo in malla[semester]) {
-			malla[semester][ramo].draw(drawer, globalX, globalY, scaleX, scaleY);
-			globalY += 110 * scaleY;
-		};
-		globalX += 130 * scaleX;
-	};
-	drawer.selectAll(".ramo-label")
-		.call(wrap, 115 * scaleX, (100 - 100/5*2) * scaleY);
+        Object.keys(malla[semKey]).forEach(function(ramoKey) {
+            malla[semKey][ramoKey].draw(drawer, globalX, globalY, scaleX, scaleY);
+            globalY += 110 * scaleY;
+        });
+        globalX += 130 * scaleX;
+    });
+    drawer.selectAll(".ramo-label")
+        .call(wrap, 115 * scaleX, (100 - 100 / 5 * 2) * scaleY);
 
 	// verificar cache
 	if (d3.select(".priori-canvas")._groups[0][0] == null && d3.select(".custom-canvas")._groups[0][0] == null) {
