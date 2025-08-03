@@ -150,26 +150,24 @@ const datasets = {
       ["Práctica Social", "EAF2500", 10, "PRACT", ["EAE2120","EAE2210","EAA2110","EAA2220","EAA2310"]],
       ["Formación General", "FG6", 10, "FORM"]
     ],
+    // Ajuste de la mención Administración: en semestre 9 se eliminan los cursos de Economía
+    // para que sólo se visualicen los ramos de Administración (Dirección y Estrategia,
+    // Dirección Financiera y Gestión de Operaciones) junto a dos optativos. En semestre 10
+    // se mantienen los cursos de Creación de Nuevas Empresas y Liderazgo Estratégico, dos
+    // optativos y la práctica profesional de Administración.
     "s9": [
-      ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
-      ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
-      ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
       ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
       ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
       ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
       ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
+      ["Optativo de Profundización", "EAE3x_2", 10, "OPT"]
     ],
     "s10": [
-      ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
-      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
       ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
       ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
-      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
-      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
-      ["Optativo de Profundización", "OPT6", 10, "OPT"]
+      ["Optativo de Profundización", "EAE3x_3", 10, "OPT"],
+      ["Optativo de Profundización", "EAE3x_4", 10, "OPT"],
+      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]]
     ]
   },
   // La malla de Economía es idéntica a la de Administración en estos archivos,
@@ -236,34 +234,26 @@ const datasets = {
       ["Práctica Social", "EAF2500", 10, "PRACT", ["EAE2120","EAE2210","EAA2110","EAA2220","EAA2310"]],
       ["Formación General", "FG6", 10, "FORM"]
     ],
-    // Semestre IX (Mención Economía):
-    // En la malla de economía, el semestre 9 está compuesto por un conjunto de tres
-    // cursos alternativos (Microeconometría Aplicada, Macroeconometría Aplicada y
-    // Teoría Econométrica I). El estudiante debe cursar uno de ellos, todos
-    // comparten prerrequisitos derivados de Econometría y de los cursos de Micro y
-    // Macroeconomía. Además, se incluyen Macroeconomía Internacional y tres
-    // optativos de profundización.  Se eliminan los ramos de Administración para que
-    // la malla de Economía quede limpia.
     "s9": [
-      // Cursos alternativos (es suficiente aprobar uno)
       ["Microeconometría Aplicada", "EAE3101", 10, "ECON", ["EAE2120","EAE2510"]],
       ["Macroeconometría Aplicada", "EAE3102", 10, "ECON", ["EAE2220","EAE2510"]],
       ["Teoría Econométrica I", "EAE350B", 12, "ECON", ["EAE2510"]],
-      // Continúa Macroeconomía Internacional con sus prerrequisitos
-      ["Macroeconomía Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
-      // Optativos de profundización propios de la mención Economía
+      ["Macroeconometría Internacional", "EAE3210", 10, "ECON", ["EAE2120","EAE2220"]],
+      ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADMIN", ["EAA2110","EAA2240","EAA2320"]],
+      ["Dirección Financiera", "EAA3201", 10, "ADMIN", ["EAA2240"]],
+      ["Gestión de Operaciones", "EAA3501", 10, "ADMIN", ["EAE2510","EAA2420"]],
       ["Optativo de Profundización", "EAE3x_1", 10, "OPT"],
       ["Optativo de Profundización", "EAE3x_2", 10, "OPT"],
       ["Optativo de Profundización", "EAE3x_3", 10, "OPT"]
     ],
-    // Semestre X (Mención Economía):
-    // Contempla un ramo integrador, dos optativos de profundización y la práctica
-    // profesional. Se eliminan los cursos de Administración para esta mención.
     "s10": [
       ["Desafíos de la Economía Aplicada", "EAE3601", 15, "ECON", ["EAE2130","EAE3210"]],
-      ["Optativo de Profundización", "EAE3x_4", 10, "OPT"],
-      ["Optativo de Profundización", "EAE3x_5", 10, "OPT"],
-      ["Práctica Profesional", "EAE3500", 15, "PRACT", ["EAF2500"]]
+      ["Práctica Profesional", "EAE3500", 15, "ECON", ["EAF2500"]],
+      ["Creación de Nuevas Empresas", "EAA3601", 10, "ADMIN", ["EAA3401","EAA3201","EAA2420"]],
+      ["Liderazgo Estratégico", "EAA3101", 5, "ADMIN", ["EAA2110","EAA3401"]],
+      ["Práctica Profesional", "EAA3500", 15, "ADMIN", ["EAF2500"]],
+      ["Optativo de Profundización", "EAE3x ó EAA3x", 10, "OPT"],
+      ["Optativo de Profundización", "OPT6", 10, "OPT"]
     ]
   }
 };

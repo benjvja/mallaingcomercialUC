@@ -61,18 +61,20 @@
 	  ["Formación General", "FG6", 10, "FORM"]
 	],
 "s9": [
-  ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADM", ["EAA2110", "EAA2240"]],
-  ["Creación de Nuevas Empresas", "EAA3601", 10, "ADM", ["EAA3401", "EAA3201"]],
+  // En el noveno semestre de Administración sólo se cursan ramos de administración y dos optativos
+  ["Dirección de Empresas y Estrategia", "EAA3401", 10, "ADM", ["EAA2110", "EAA2240", "EAA2320"]],
   ["Dirección Financiera", "EAA3201", 10, "ADM", ["EAA2240"]],
-  ["Liderazgo Estratégico", "EAA3101", 5, "ADM", ["EAA3401"]],
-  ["Gestión de Operaciones", "EAA3501", 10, "ADM", ["EAE2510", "EAE2130", "EAA2240"]],
-  ["Optativo de Profundización", "EAA3OPT1", 10, "OPT"]
+  ["Gestión de Operaciones", "EAA3501", 10, "ADM", ["EAE2510", "EAA2420"]],
+  ["Optativo de Profundización", "EAA3OPT1", 10, "OPT"],
+  ["Optativo de Profundización", "EAA3OPT2", 10, "OPT"]
 ],
 "s10": [
-  ["Optativo de Profundización", "EAA3OPT2", 10, "OPT"],
+  // Décimo semestre de Administración: se incluyen creación de empresas, liderazgo, dos optativos y la práctica
+  ["Creación de Nuevas Empresas", "EAA3601", 10, "ADM", ["EAA3401", "EAA3201", "EAA2420"]],
+  ["Liderazgo Estratégico", "EAA3101", 5, "ADM", ["EAA2110", "EAA3401"]],
   ["Optativo de Profundización", "EAA3OPT3", 10, "OPT"],
-  ["Práctica Profesional", "EAA2500", 15, "PRACT", ["EAA3601"]],
-  ["Proyecto de Título", "EAA3500", 15, "EXAM", ["EAA3101"]]
+  ["Optativo de Profundización", "EAA3OPT4", 10, "OPT"],
+  ["Práctica Profesional", "EAA3500", 15, "PRACT", ["EAF2500"]]
 ]
 
   }
