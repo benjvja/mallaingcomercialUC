@@ -1,558 +1,79 @@
 <!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Malla Ingeniería Comercial UC</title>
-  <!-- Importar Bootstrap, Google Fonts y FontAwesome para mejorar la estética -->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
-  <!-- Importar fuente decorativa alternativa para el título (simula Packy Great) -->
-  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&display=swap" rel="stylesheet">
-  <style>
-    body {
-      font-family: 'Open Sans', sans-serif;
-    }
-  </style>
-  <style>
-    /* Reset y tipografía */
-    body {
-      font-family: 'Arial', sans-serif;
-      background: #f8f9fa;
-      margin: 20px;
-      color: #000;
-      font-weight: 700;
-    }
+<html>
+  <head>
+    <meta charset="UTF-8">
+	<title>Ramos</title>
+	<meta property="og:title" content="Malla Interactiva" />
+	<meta property="og:url" content="http://labcomp.cl/~saedo/apps/viz/ramos" />
+	<meta property="og:image" content="http://labcomp.cl/~saedo/apps/viz/ramos/thumbnail.png" />
 
-    h1 {
-      margin-bottom: 25px;
-      color: #004b8d;
-    }
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet"> 
 
-    /* Botones de selección */
-    .selector-mencion {
-      text-align: center;
-      margin-bottom: 20px;
-    }
 
-    .selector-mencion button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      border: 2px solid #004b8d;
-      border-radius: 5px;
-      cursor: pointer;
-      background: #fff;
-      color: #000;
-      font-weight: 700;
-      transition: background-color 0.3s, color 0.3s;
-    }
-
-    .selector-mencion button.active,
-    .selector-mencion button:hover {
-      background: #004b8d;
-      color: #fff;
-    }
-
-    /* Grid de la malla */
-    .malla {
-      /* Arrange the 10 semestres horizontally so progress is visualised left-to-right. */
-      display: grid;
-      /*
-       * Arrange the ten semesters as fixed‐width columns.  Using
-       * grid-auto-flow set to column and grid-auto-columns gives each
-       * semester a consistent width (260px) while still allowing the
-       * entire malla to scroll horizontally when the viewport is
-       * narrower than the total width.  The width of the grid is set
-       * implicitly by the number of columns and gaps, so a horizontal
-       * scrollbar appears when needed instead of squashing the columns.
-       */
-      grid-auto-flow: column;
-      grid-auto-columns: 260px;
-      gap: 15px;
-      width: 100%;
-      overflow-x: auto;
-      user-select: none;
-    }
-
-    /* Cada semestre */
-    .semestre {
-      background: #fff;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      padding: 12px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .semestre h2 {
-      font-size: 14px;
-      text-align: center;
-      margin-bottom: 10px;
-      border-bottom: 2px solid #90caf9;
-      padding-bottom: 6px;
-      color: #000;
-    }
-
-    /* Ramos */
-    .ramos {
-      /* Stack the courses vertically inside each semester column */
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .ramo {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 80px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      background: #fafafa;
-      font-size: 10px;
-      text-align: center;
-      position: relative;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: pointer;
-      color: #000;
-      font-weight: 700;
-      /* Ensure each ramo takes full width of the semester column */
-      width: 100%;
-      /* Clip the approval slash inside the card so that diagonal lines
-       * do not spill outside the bounds of the course. This makes
-       * the strike-through appear neatly within each rectangle.
-       */
-      overflow: hidden;
-    }
-
-    .ramo:hover:not(.bloqueado):not(.hidden) {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .ramo::before {
-      content: attr(data-id);
-      position: absolute;
-      top: 6px;
-      left: 6px;
-      font-size: 8px;
-      color: #000;
-      font-weight: 700;
-    }
-
-    .ramo.no-id::before {
-      content: none !important;
-    }
-
-    .ramo span {
-      line-height: 1.2;
-    }
-
-    .creditos {
-      font-size: 8px;
-      margin-top: 2px;
-      color: #000;
-      font-weight: 700;
-    }
-
-    /* Colores por tipo de curso */
-    /* Pastel palette inspired by the original PDF diagram */
-    .econ {
-      background-color: #BBDEFB;
-      border-color: #90CAF9;
-      color: #000;
-    }
-    .admin {
-      background-color: #FFCDD2;
-      border-color: #EF9A9A;
-      color: #000;
-    }
-    .mat {
-      background-color: #FFF9C4;
-      border-color: #FFF59D;
-      color: #000;
-    }
-    .prog {
-      background-color: #E1BEE7;
-      border-color: #CE93D8;
-      color: #000;
-    }
-    .form {
-      background-color: #C8E6C9;
-      border-color: #A5D6A7;
-      color: #000;
-    }
-    .opt {
-      background-color: #E0E0E0;
-      border-color: #BDBDBD;
-      color: #000;
-    }
-    .practica {
-      background-color: #B2DFDB;
-      border-color: #80CBC4;
-      color: #000;
-    }
-    .examen {
-      background-color: #F8BBD0;
-      border-color: #F48FB1;
-      color: #000;
-    }
-
-    /* Estados */
-    .ramo.bloqueado {
-      /* Keep the original pastel background for locked ramos but lower the opacity
-         and disable pointer events.  This preserves the aesthetic while signalling
-         that the course is locked. */
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .ramo.aprobado::after {
-      /*
-       * Draw a diagonal line across the approved course to indicate
-       * completion.  Reduce the width to avoid an oversized slash
-       * stretching far beyond the card.  Keep the line thin and
-       * slightly shorter than the box for a subtler look.
-       */
-      content: "";
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      /* Reduce the length of the diagonal line so it doesn't fully
-       * span corner to corner.  With overflow hidden on the parent,
-       * a width slightly larger than the card allows the slash to sit
-       * comfortably inside the rectangle without overshooting.
-       */
-      /* Extend the diagonal line beyond the card's width so that,
-       * when clipped by overflow: hidden, it runs neatly from
-       * corner to corner.  A length of roughly twice the card's
-       * width ensures full coverage of the diagonal.
-       */
-      width: 200%;
-      height: 2px;
-      background-color: #333;
-      transform: translate(-50%, -50%) rotate(-45deg);
-      pointer-events: none;
-    }
-    .ramo.hidden { display: none; }
-
-    /* Leyenda */
-    .leyenda {
-      max-width: 1400px;
-      margin: 20px auto;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 15px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    }
-    .leyenda div { display: flex; align-items: center; gap: 10px; }
-    .leyenda-circle { width: 16px; height: 16px; border-radius: 4px; display: inline-block; border: 2px solid #ccc; }
-
-    /* Footer */
-    footer {
-      text-align: center;
-      margin: 2rem 0;
-      color: #666;
-      font-weight: 700;
-    }
-
-    /* Título de la malla: usar una tipografía decorativa (Lilita One
-     * como sustituto de Packy Great debido a las limitaciones de
-     * fuentes descargadas) y aplicar el color solicitado.  También
-     * incrementamos el tamaño para destacarlo. */
-    .navbar-brand {
-      font-family: 'Lilita One', 'Open Sans', sans-serif;
-      color: #302c9b !important;
-      font-size: 1.8rem;
-    }
-
-    /* Aumentar el grosor de los títulos de semestre y los botones de
-     * mención para que se vean más destacados */
-    .semestre h2 {
-      font-weight: 800;
-    }
-    #btn-economia, #btn-admin {
-      font-weight: 800;
-    }
-
-    /*
-     * Personalización de los botones de mención.
-     * Los colores de los botones se alinean con los colores de los ramos
-     * de cada mención: azul pastel para Economía y rosa pastel para
-     * Administración.  Los estados activo y hover aplican el color de
-     * fondo y borde correspondientes.  Cuando no están activos, los
-     * botones muestran sólo el borde de su color para mantener un
-     * aspecto ligero.
-     */
-    #btn-economia {
-      border-color: #90CAF9;
-      color: #0D47A1;
-    }
-    #btn-economia:hover {
-      background-color: #BBDEFB;
-      border-color: #90CAF9;
-      color: #000;
-    }
-    #btn-economia.active {
-      background-color: #BBDEFB;
-      border-color: #90CAF9;
-      color: #000;
-    }
-    #btn-admin {
-      border-color: #EF9A9A;
-      color: #C62828;
-    }
-    #btn-admin:hover {
-      background-color: #FFCDD2;
-      border-color: #EF9A9A;
-      color: #000;
-    }
-    #btn-admin.active {
-      background-color: #FFCDD2;
-      border-color: #EF9A9A;
-      color: #000;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- Barra de navegación al estilo de la malla de referencia -->
-  <nav class="navbar navbar-light bg-light justify-content-between mb-4">
-    <span class="navbar-brand mb-0 h1">Malla Ingeniería Comercial UC</span>
-    <div class="d-flex">
-      <button id="btn-economia" class="btn mr-2 active" onclick="cambiarMencion('economia')">Mención Economía</button>
-      <button id="btn-admin" class="btn mr-2" onclick="cambiarMencion('admin')">Mención Administración</button>
-    </div>
-  </nav>
-
-  <div class="container">
-
-  <div class="malla">
-    <!-- Aquí va todo el contenido de semestres y ramos (copiado de tu código funcional) -->
-<!-- SEMESTRE 1 -->
-<div class="semestre" data-sem="1">
-  <h2>Semestre I</h2>
-  <div class="ramos">
-    <div class="ramo mat" data-id="MAT1610"><span>Cálculo I</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE1110"><span>Introducción a la Microeconomía</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA1110"><span>Comportamiento Organizacional</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA1210"><span>Contabilidad</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="VRA2010"><span>English Placement Test Alte 2</span><div class="creditos">0 CR</div></div>
-    <div class="ramo form" data-id="VRA100C"><span>Comunicación Escrita</span><div class="creditos">0 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 2 -->
-<div class="semestre" data-sem="2">
-  <h2>Semestre II</h2>
-  <div class="ramos">
-    <div class="ramo mat" data-id="MAT1620" data-prereq="MAT1610"><span>Cálculo II</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE1210" data-prereq="EAE1110"><span>Introducción a la Macroeconomía</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA1510" data-prereq="MAT1610,MAT1620"><span>Probabilidad y Estadística</span><div class="creditos">10 CR</div></div>
-    <div class="ramo mat" data-id="MAT1279"><span>Introducción al Algebra Lineal</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="FIL2001"><span>Filosofía: ¿Para qué?</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="VRA3010"><span>English Test Sufficiency Alte 3</span><div class="creditos">0 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 3 -->
-<div class="semestre" data-sem="3">
-  <h2>Semestre III</h2>
-  <div class="ramos">
-    <div class="ramo practica" data-id="EAF2010" data-prereq="MAT1620,MAT1279"><span>Apli. Mat. Para Economía y Negocios</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE1220" data-prereq="EAE1210"><span>Análisis Económico: La Exp. Chilena</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA1520" data-prereq="EAA1510"><span>Inferencia Estadística</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA1220" data-prereq="EAA1510,EAA1210"><span>Fundamentos de Finanzas</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="TTF1"><span>Teológico</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 4 -->
-<div class="semestre" data-sem="4">
-  <h2>Semestre IV</h2>
-  <div class="ramos">
-    <div class="ramo econ" data-id="EAE2510" data-prereq="EAA1520,MAT1279"><span>Econometría</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE2110" data-prereq="EAF2010,EAE1220"><span>Microeconomía I</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2410" data-prereq="EAA1220,EAE1110"><span>Estrategia de la Organización</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2310" data-prereq="EAA1510,EAA1210,EAA1110"><span>Fundamentos de Marketing</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="FG1"><span>Formación General</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 5 -->
-<div class="semestre" data-sem="5">
-  <h2>Semestre V</h2>
-  <div class="ramos">
-    <div class="ramo prog" data-id="IIC1103"><span>Introducción a la Programación</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE2120" data-prereq="EAE2110"><span>Microeconomía II</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE2210" data-prereq="EAE1220,EAA1520"><span>Macroeconomía I</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2210" data-prereq="EAA2410,EAA1520"><span>Teoría Financiera</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="FG2"><span>Formación General</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 6 -->
-<div class="semestre" data-sem="6">
-  <h2>Semestre VI</h2>
-  <div class="ramos">
-    <div class="ramo opm" data-id="OPM1"><span>Opt. de Profundización/Minor</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2420" data-prereq="EAA2410,EAE2120"><span>Estrategia Competitiva</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ" data-id="EAE2130" data-prereq="EAE2120"><span>Competencia y Mercado</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2220" data-prereq="EAA2410"><span>Contabilidad de Costos</span><div class="creditos">5 CR</div></div>
-    <div class="ramo admin" data-id="EAA2320" data-prereq="EAE2510,EAA2310"><span>Marketing Analytics</span><div class="creditos">10 CR</div></div>
-    <div class="ramo mat" data-id="ETI209" data-prereq="EAA2410,EAE1220"><span>Ética, Economía y Empresa</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="FG4"><span>Formación General</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 7 -->
-<div class="semestre" data-sem="7">
-  <h2>Semestre VII</h2>
-  <div class="ramos">
-    <div class="ramo opm" data-id="OPM2"><span>Opt. de Profundización/Minor</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2230"><span>Empresa y Legislación</span><div class="creditos">5 CR</div></div>
-    <div class="ramo econ" data-id="EAE2220" data-prereq="EAE2210"><span>Macroeconomía II</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin" data-id="EAA2240" data-prereq="EAA2210,EAE2220"><span>Contabilidad Gerencial</span><div class="creditos">5 CR</div></div>
-    <div class="ramo admin" data-id="EAA2110" data-prereq="EAA1110,ETI209"><span>Dirección de Personas</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="FG5"><span>Formación General</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 8 -->
-<div class="semestre" data-sem="8">
-  <h2>Semestre VIII</h2>
-  <div class="ramos">
-    <div class="ramo opm" data-id="OPM3"><span>Opt. de Profundización/Minor</span><div class="creditos">10 CR</div></div>
-    <div class="ramo opm" data-id="OPM4"><span>Opt. de Profundización/Minor</span><div class="creditos">10 CR</div></div>
-    <div class="ramo opm" data-id="OPM5"><span>Opt. de Profundización/Minor</span><div class="creditos">10 CR</div></div>
-    <div class="ramo practica" data-id="EAF2500" data-prereq="EAE2120,EAE2210,EAA2110,EAA2220,EAA2310"><span>Práctica Social</span><div class="creditos">10 CR</div></div>
-    <div class="ramo form" data-id="FG6"><span>Formación General</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 9 -->
-<div class="semestre" data-sem="9">
-  <h2>Semestre IX</h2>
-  <div class="ramos">
-    <div class="ramo econ mencion-economia" data-id="EAE3101" data-prereq="EAE2120,EAE2510"><span>Microeconometría Aplicada</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ mencion-economia" data-id="EAE3102" data-prereq="EAE2220,EAE2510"><span>Macroeconometría Aplicada</span><div class="creditos">10 CR</div></div>
-    <div class="ramo econ mencion-economia" data-id="EAE350B" data-prereq="EAE2510"><span>Teoría Econométrica I</span><div class="creditos">12 CR</div></div>
-    <div class="ramo econ mencion-economia" data-id="EAE3210" data-prereq="EAE2120,EAE2220"><span>Macroeconometría Internacional</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin mencion-admin" data-id="EAA3401" data-prereq="EAA2110,EAA2240,EAA2320"><span>Dirección de Empresas y Estrategia</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin mencion-admin" data-id="EAA3201" data-prereq="EAA2240"><span>Dirección Financiera</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin mencion-admin" data-id="EAA3501" data-prereq="EAE2510,EAA2420"><span>Gestión de Operaciones</span><div class="creditos">10 CR</div></div>
-    <div class="ramo opt mencion-economia" data-id="EAE3x_1"><span>Optativo de Profundización</span><div class="creditos">10 CR</div></div>
-    <div class="ramo opt" data-id="EAE3x_2"><span>Optativo de Profundización</span><div class="creditos">10 CR</div></div>
-    <div class="ramo opt" data-id="EAE3x_3"><span>Optativo de Profundización</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-
-<!-- SEMESTRE 10 -->
-<div class="semestre" data-sem="10">
-  <h2>Semestre X</h2>
-  <div class="ramos">
-    <div class="ramo econ mencion-economia" data-id="EAE3601" data-prereq="EAE2130,EAE3210"><span>Desafíos de la Economía Aplicada</span><div class="creditos">15 CR</div></div>
-    <div class="ramo econ mencion-economia" data-id="EAE3500" data-prereq="EAF2500"><span>Práctica Profesional</span><div class="creditos">15 CR</div></div>
-    <div class="ramo admin mencion-admin" data-id="EAA3601" data-prereq="EAA3401,EAA3201,EAA2420"><span>Creación de Nuevas Empresas</span><div class="creditos">10 CR</div></div>
-    <div class="ramo admin mencion-admin" data-id="EAA3101" data-prereq="EAA2110,EAA3401"><span>Liderazgo Estratégico</span><div class="creditos">5 CR</div></div>
-    <div class="ramo admin mencion-admin" data-id="EAA3500" data-prereq="EAF2500"><span>Práctica Profesional</span><div class="creditos">15 CR</div></div>
-    <div class="ramo opt" data-id="EAE3x ó EAA3x"><span>Optativo de Profundización</span><div class="creditos">10 CR</div></div>
-    <div class="ramo opt" data-id="OPT6"><span>Optativo de Profundización</span><div class="creditos">10 CR</div></div>
-  </div>
-</div>
-  </div>
-
-    <div class="leyenda">
-    <div><span class="leyenda-circle econ"></span>Economía</div>
-    <div><span class="leyenda-circle admin"></span>Administración</div>
-    <div><span class="leyenda-circle mat"></span>Matemáticas</div>
-    <div><span class="leyenda-circle prog"></span>Programación</div>
-    <div><span class="leyenda-circle form"></span>Formación General</div>
-    <div><span class="leyenda-circle opt"></span>Optativos</div>
-    <div><span class="leyenda-circle practica"></span>Práctica</div>
-    <div><span class="leyenda-circle examen"></span>Examen</div>
-    </div>
-  </div> <!-- cierre container -->
-
-  <!-- Botón de reinicio al fondo de la página -->
-  <div class="text-center my-3">
-    <button id="btn-reset" class="btn btn-outline-danger" onclick="reiniciarMalla()">Reiniciar Progreso</button>
-  </div>
-
+  <!-- Google Analytics -->
   <script>
-    let mencionActual = 'economia';
-    const progreso = JSON.parse(localStorage.getItem('mallaProgreso')) || {};
-    const ramos = document.querySelectorAll('.ramo');
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    function reiniciarMalla() {
-      if (confirm("¿Seguro que quieres reiniciar todo tu progreso?")) {
-        localStorage.removeItem('mallaProgreso');
-        for (let key in progreso) delete progreso[key];
-        actualizarTodos();
-      }
-    }
+    ga('create', 'UA-108274078-1', 'auto');
+    ga('send', 'pageview');
 
-    function cambiarMencion(mencion) {
-      mencionActual = mencion;
-      document.getElementById('btn-economia').classList.toggle('active', mencion === 'economia');
-      document.getElementById('btn-admin').classList.toggle('active', mencion === 'admin');
-
-      ramos.forEach(ramo => {
-        if (ramo.classList.contains('mencion-economia')) {
-          ramo.classList.toggle('hidden', mencion !== 'economia');
-        } else if (ramo.classList.contains('mencion-admin')) {
-          ramo.classList.toggle('hidden', mencion !== 'admin');
-        }
-      });
-
-      actualizarTodos();
-    }
-
-    function tienePrerequisitos(ramo) {
-      const prereq = ramo.dataset.prereq;
-      if (!prereq) return true;
-      return prereq.split(',').every(id => progreso[id]);
-    }
-
-    function actualizarEstado(ramo) {
-      if (ramo.classList.contains('hidden')) return;
-      const id = ramo.dataset.id;
-      const aprobado = !!progreso[id];
-      const desbloqueado = tienePrerequisitos(ramo);
-
-      if (aprobado) {
-        ramo.classList.add('aprobado');
-        ramo.classList.remove('bloqueado');
-      } else {
-        ramo.classList.remove('aprobado');
-        ramo.classList.toggle('bloqueado', !desbloqueado);
-      }
-    }
-
-    function actualizarTodos() {
-      ramos.forEach(actualizarEstado);
-    }
-
-    ramos.forEach(ramo => {
-      ramo.addEventListener('click', () => {
-        if (ramo.classList.contains('bloqueado') || ramo.classList.contains('hidden')) return;
-        let id = ramo.dataset.id;
-        progreso[id] = !progreso[id];
-        localStorage.setItem('mallaProgreso', JSON.stringify(progreso));
-        actualizarTodos();
-      });
-    });
-
-    // Inicializa con Economía
-    cambiarMencion('economia');
   </script>
+  </head>
+  <style>
+		body {
+			display: inline;
+			text-align: center;
+			justify-content:center;
+		}
+		html {
+			font-family: sans-serif;
+		}
 
-  <footer>Hecho por Benjamin Núñez</footer>
-</body>
+		.info {
+			font-size: 30px;
+		}
+
+  </style>  
+
+  <body>
+
+<nav class="navbar navbar-default"style='display:flex;justify-content:center'>
+  <div class="container-fluid" >
+<!-- index.html -->
+<nav class="navbar" style="display:flex;justify-content:center;gap:2em;margin:1em 0;">
+  <a href="?m=ICOMA" style="font-weight:bold;text-decoration:none;color:#333;">
+    Comercial Administración
+  </a>
+  <a href="?m=ICOME" style="font-weight:bold;text-decoration:none;color:#333;">
+    Comercial Economía
+  </a>
+</nav>
+
+    
+	  <h1>Malla Interactiva <span id="carrera"></span></h1>
+		<div class='canvas'></div>		
+		<div class='color-description' style="position:relative;display:flex;justify-content:center;flex-wrap:wrap;"></div>
+		<div class="info">
+      Créditos aprobados: <span id='creditos'></span> <br>
+      <button type="button" onclick="limpiarRamos()" class="btn btn-info">Limpiar ramos aprobados</button>
+
+
+		<script src='d3.js'></script>
+		<script src='ramos.js'></script>
+		<script src='canvas.js'></script>
+      <script>
+          function assureMail() {
+              if (confirm(`¿Estás seguro que necesitas contactar? Para hacer cambios en alguna malla, primero te invito a mirar el codigo fuente, ya que yo personalmente no me dedico a mantenerlas. En el caso de un bug, es recomendado hacerlo.`)) {
+                  window.location = "mailto:sebastian.aedo@sansano.usm.cl"
+              }
+          }
+      </script>
+  </body>
 </html>
+
