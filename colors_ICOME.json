@@ -1,0 +1,11 @@
+{
+	"MAT": ["#4CAF50", "Matemáticas"],
+	"ECON": ["#2196F3", "Economía"],
+	"ADMIN": ["#FFC107", "Administración"],
+	"FORM": ["#9E9E9E", "Formación General"],
+	"PROG": ["#3F51B5", "Programación"],
+	"PRACT": ["#8BC34A", "Práctica"],
+	"OPM": ["#FF5722", "Opt. Profundización"],
+	"OPT": ["#795548", "Optativo"]
+  }
+  
